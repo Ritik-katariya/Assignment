@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trending Topics</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+    <h1>Twitter Trending Topics</h1>
+    <button id="run-script">Click here to run the script</button>
+    <div id="results"></div>
+    <script>
+        console.log('Hello from the browser!');
+       document.getElementById('run-script').addEventListener('click', async () => {
+    const response = await fetch('/run-script');
+    const data = await response.json();
+    console.log(data)
+    if (data.trends.length === 0) {
+        document.getElementById('results').innerHTML = `
+            <h3>No trending topics found as of ${data.datetime}</h3>
+            <p>The IP address used for this query was ${data.ip_address}.</p>
+        `;
+    } else {
+        document.getElementById('results').innerHTML = `
+            <h3>These are the most happening topics as of ${data.datetime}</h3>
+            <ul>
+                ${data.trends.map(trend => `<li>${trend}</li>`).join('')}
+            </ul>
+            <p>The IP address used for this query was ${data.ip_address}.</p>
+        `;
+    }
+});
+
+    </script>
+</body>
+</html>
